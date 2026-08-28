@@ -6,7 +6,7 @@
 <title>五星红旗 · 互动问答</title>
 <link rel="stylesheet" href="common.css">
 </head>
-<body>
+<body data-page="quiz">
 
 <div class="bg-stars" aria-hidden="true">
   <span style="left:5%;top:15%">★</span>
@@ -18,15 +18,26 @@
 </div>
 
 <header class="site-header">
+  <div class="lang-bar">
+    <label for="langSelect" data-i18n="lang_label">语言</label>
+    <select id="langSelect" class="lang-select" aria-label="Language / 语言">
+      <option value="zh">中文</option>
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+      <option value="ru">Русский</option>
+      <option value="es">Español</option>
+      <option value="ar">العربية</option>
+    </select>
+  </div>
   <span class="deco-star" style="left:8%;top:18%;font-size:28px">★</span>
   <span class="deco-star" style="left:88%;top:25%;font-size:22px;animation-delay:1s">★</span>
   <span class="deco-star" style="left:78%;top:70%;font-size:18px;animation-delay:2s">★</span>
   <span class="deco-star" style="left:15%;top:75%;font-size:24px;animation-delay:1.5s">★</span>
-  <h1>五 星 红 旗</h1>
-  <p class="sub">互 动 问 答</p>
+  <h1 data-i18n="header_title">五 星 红 旗</h1>
+  <p class="sub" data-i18n="header_sub_quiz">互 动 问 答</p>
   <nav class="nav">
-    <a href="index.html">国旗简介</a>
-    <a href="quiz.html" class="active">互动问答</a>
+    <a href="index.html" data-i18n="nav_index">国旗简介</a>
+    <a href="quiz.html" class="active" data-i18n="nav_quiz">互动问答</a>
   </nav>
 </header>
 
@@ -44,30 +55,30 @@
   <section id="quiz">
     <div class="section-title">
       <span class="bar"></span>
-      <h2>互动问答</h2>
+      <h2 data-i18n="quiz_sec_title">互动问答</h2>
       <span class="star">★</span>
     </div>
 
     <div class="card">
       <div class="quiz-head">
         <div class="meta">
-          <span class="badge">题库共 <b id="bankCount">0</b> 题</span>
-          <span class="badge gold">已答 <b id="curIndex">0</b> / <b id="totalQ">10</b></span>
-          <span class="badge">得分 <b id="score">0</b></span>
+          <span class="badge" id="badgeBank">题库共 0 题</span>
+          <span class="badge gold" id="badgeProgress">已答 0 / 10</span>
+          <span class="badge" id="badgeScore">得分 0</span>
         </div>
         <div class="progress"><i id="progressBar"></i></div>
-        <button class="btn btn-ghost" id="refreshBtn">换一组题</button>
+        <button class="btn btn-ghost" id="refreshBtn" data-i18n="btn_refresh">换一组题</button>
       </div>
 
       <div id="quizArea"></div>
 
       <div class="quiz-result" id="resultBox">
-        <div style="font-size:22px;letter-spacing:3px">本次答题完成</div>
+        <div style="font-size:22px;letter-spacing:3px" data-i18n="result_title">本次答题完成</div>
         <div class="score-big" id="finalScore">0 / 10</div>
         <div class="score-tip" id="resultTip">继续加油,五星红旗永远飘扬!</div>
         <div class="actions">
-          <button class="btn btn-ghost" id="againBtn">再答一组</button>
-          <a class="btn btn-ghost" href="index.html">回看简介</a>
+          <button class="btn btn-ghost" id="againBtn" data-i18n="btn_again">再答一组</button>
+          <a class="btn btn-ghost" href="index.html" data-i18n="btn_back">回看简介</a>
         </div>
       </div>
     </div>
@@ -76,69 +87,39 @@
 
 <footer>
   <div class="star-divider">★ ★ ★ ★ ★</div>
-  <p>致敬五星红旗 · 弘扬红色文化</p>
+  <p data-i18n="footer_text">致敬五星红旗 · 弘扬红色文化</p>
 </footer>
 
+<script src="i18n.js"></script>
 <script>
-/* ============== 题库(30 题) ============== */
-const QUESTION_BANK = [
-  {q:"五星红旗的设计者是谁?",o:["曾联松","梁思成","徐悲鸿","茅盾"],a:0},
-  {q:"五星红旗正式确定为中华人民共和国国旗的会议是?",o:["第一届全国人民代表大会","中国人民政治协商会议第一届全体会议","中共七届二中全会","中央人民政府委员会第一次会议"],a:1},
-  {q:"五星红旗首次在天安门广场升起的时间是?",o:["1949年9月27日","1949年9月30日","1949年10月1日","1950年10月1日"],a:2},
-  {q:"国旗底面的红色象征什么?",o:["光明","革命","团结","和平"],a:1},
-  {q:"国旗上的大五角星代表什么?",o:["人民","政府","中国共产党","军队"],a:2},
-  {q:"国旗上四颗小五角星代表什么?",o:["四个民族","四个省份","人民四个阶级","四个地区"],a:2},
-  {q:"国旗上五角星的颜色是什么?",o:["白色","黄色","红色","蓝色"],a:1},
-  {q:"国旗图案征集共收到多少幅应征稿件?",o:["约1500幅","约2000幅","约2992幅","约3500幅"],a:2},
-  {q:"五星红旗的长宽比例是?",o:["3:2","4:3","5:3","2:1"],a:0},
-  {q:"国旗图案公开征集开始于哪一年?",o:["1947年","1948年","1949年","1950年"],a:2},
-  {q:"曾联松设计国旗时的年龄大约是?",o:["25岁","31岁","40岁","50岁"],a:1},
-  {q:"曾联松的籍贯是?",o:["浙江瑞安","江苏南京","山东济南","广东广州"],a:0},
-  {q:"国旗上四颗小星各有一角指向哪里?",o:["旗杆方向","大星中心","左上角","右下角"],a:1},
-  {q:"国旗上星星的黄色象征什么?",o:["革命","光明","和平","繁荣"],a:1},
-  {q:"五颗星的整体排列象征什么?",o:["对称","平衡","革命人民大团结","秩序"],a:2},
-  {q:"《中华人民共和国国旗法》于哪一年通过?",o:["1980年","1990年","2000年","1975年"],a:1},
-  {q:"国旗通用规格(型号)通常分为几种?",o:["3种","5种","7种","10种"],a:1},
-  {q:"升挂国旗时应注意什么?",o:["缓慢升起即可","静止不动","应升至杆顶","半杆即可"],a:2},
-  {q:"下列哪个场所每日升挂国旗?",o:["居民区","商场","天安门广场等","私人住宅"],a:2},
-  {q:"曾联松设计国旗时的职业是?",o:["画家","经济通讯社秘书","军人","教师"],a:1},
-  {q:"国旗设计稿的初选由谁负责?",o:["毛主席","周总理","国旗图案评选委员会","全体政协委员"],a:2},
-  {q:"国旗中四颗小星围绕大星,体现的关系是?",o:["平等并列","党领导下的团结","相互制衡","依次排列"],a:1},
-  {q:"国旗大五角星位于旗面的什么位置?",o:["左上方","右上方","正中央","左下方"],a:0},
-  {q:"国旗在降半旗时表示什么?",o:["庆祝","哀悼","纪念胜利","警告"],a:1},
-  {q:"国旗法规定国旗不得用于下列哪种场合?",o:["庆典活动","重要会议","商标、广告、私人丧事","体育赛事"],a:2},
-  {q:"开国大典上谁按下电钮升起第一面五星红旗?",o:["周恩来","朱德","毛泽东","刘少奇"],a:2},
-  {q:"国旗图案征集活动面向哪里?",o:["仅国内","仅北京","海内外","仅党内"],a:2},
-  {q:"五星红旗的五星布于旗面的哪个区域?",o:["左上方四分之一","左下方","右上方四分之一","右下方四分之一"],a:0},
-  {q:"曾联松设计五星红旗时所在的城市是?",o:["北京","南京","上海","瑞安"],a:2},
-  {q:"下列关于国旗礼仪,正确的是?",o:["破损的国旗可继续使用","国旗应保持整洁庄严","国旗可用于商品包装","国旗可作私人装饰"],a:1},
-  {q:"曾联松原稿中大五角星内原本含有什么图案?",o:["天安门","镰刀斧头","齿轮麦穗","五星"],a:1},
-  {q:"曾联松毕业于哪所大学?",o:["北京大学","国立中央大学(今南京大学前身)","复旦大学","浙江大学"],a:1},
-  {q:"国旗图案评选委员会从应征稿中精选出多少幅入围图案?",o:["10幅","20幅","38幅","50幅"],a:2}
-];
-
-/* ============== 问答逻辑 ============== */
+/* ============== 问答逻辑(题库随语言切换) ============== */
 const QUIZ_SIZE = 10;
 let currentQuiz = [];
 let userScore = 0;
 let answeredCount = 0;
 
-const quizArea   = document.getElementById('quizArea');
-const resultBox  = document.getElementById('resultBox');
-const bankCount  = document.getElementById('bankCount');
-const curIndex   = document.getElementById('curIndex');
-const totalQ     = document.getElementById('totalQ');
-const scoreEl    = document.getElementById('score');
-const progressBar= document.getElementById('progressBar');
-const finalScore = document.getElementById('finalScore');
-const resultTip  = document.getElementById('resultTip');
+const quizArea     = document.getElementById('quizArea');
+const resultBox    = document.getElementById('resultBox');
+const badgeBank    = document.getElementById('badgeBank');
+const badgeProgress= document.getElementById('badgeProgress');
+const badgeScore   = document.getElementById('badgeScore');
+const progressBar  = document.getElementById('progressBar');
+const finalScore   = document.getElementById('finalScore');
+const resultTip    = document.getElementById('resultTip');
 
-bankCount.textContent = QUESTION_BANK.length;
-totalQ.textContent    = QUIZ_SIZE;
+/* 当前语言的题库 */
+function bank(){ return I18N[currentLang].questions; }
+
+/* 刷新统计徽章 */
+function refreshBadges(){
+  badgeBank.textContent     = fmt('badge_bank',     {n: bank().length});
+  badgeProgress.textContent = fmt('badge_progress', {a: answeredCount, t: QUIZ_SIZE});
+  badgeScore.textContent    = fmt('badge_score',    {s: userScore});
+}
 
 /* 从题库随机抽取 N 题 */
 function pickQuestions(n){
-  const arr = [...QUESTION_BANK];
+  const arr = [...bank()];
   for(let i=arr.length-1;i>0;i--){
     const j = Math.floor(Math.random()*(i+1));
     [arr[i],arr[j]] = [arr[j],arr[i]];
@@ -164,7 +145,6 @@ function renderQuiz(){
   currentQuiz = pickQuestions(QUIZ_SIZE);
   userScore = 0;
   answeredCount = 0;
-  scoreEl.textContent = 0;
   resultBox.classList.remove('show');
   quizArea.innerHTML = '';
 
@@ -189,7 +169,8 @@ function renderQuiz(){
   });
 
   bindOptions();
-  updateProgress();
+  refreshBadges();
+  progressBar.style.width = '0%';
 }
 
 /* 绑定选项点击 */
@@ -209,30 +190,25 @@ function bindOptions(){
         });
         if(oi === correct){
           userScore++;
-          scoreEl.textContent = userScore;
         }
         answeredCount++;
-        updateProgress();
+        refreshBadges();
+        progressBar.style.width = (answeredCount / QUIZ_SIZE * 100) + '%';
         if(answeredCount === QUIZ_SIZE) showResult();
       });
     });
   });
 }
 
-function updateProgress(){
-  curIndex.textContent = answeredCount;
-  progressBar.style.width = (answeredCount / QUIZ_SIZE * 100) + '%';
-}
-
 function showResult(){
   finalScore.textContent = `${userScore} / ${QUIZ_SIZE}`;
-  let tip = '';
-  if(userScore === QUIZ_SIZE)      tip = '满分!你是真正的国旗知识达人!★';
-  else if(userScore >= 8)          tip = '非常优秀,红色文化牢记于心!';
-  else if(userScore >= 6)          tip = '不错,继续深入了解国旗故事!';
-  else if(userScore >= 4)          tip = '还需加油,回看简介再战一回!';
-  else                              tip = '别灰心,多学多看,五星红旗为你加油!';
-  resultTip.textContent = tip;
+  let tipKey;
+  if(userScore === QUIZ_SIZE)      tipKey = 'tip_full';
+  else if(userScore >= 8)          tipKey = 'tip_great';
+  else if(userScore >= 6)          tipKey = 'tip_good';
+  else if(userScore >= 4)          tipKey = 'tip_ok';
+  else                             tipKey = 'tip_low';
+  resultTip.textContent = t(tipKey);
   resultBox.classList.add('show');
   resultBox.scrollIntoView({behavior:'smooth',block:'center'});
 }
@@ -245,6 +221,11 @@ document.getElementById('againBtn').addEventListener('click', () => {
   renderQuiz();
   document.getElementById('quiz').scrollIntoView({behavior:'smooth'});
 });
+
+/* 切换语言后,以新语言的题库重新出题 */
+window.onI18nApplied = function(){
+  renderQuiz();
+};
 
 /* 初始化 */
 renderQuiz();

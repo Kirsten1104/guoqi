@@ -220,3 +220,28 @@ footer .star-divider{color:var(--gold);-webkit-text-stroke:1px var(--red-deep);l
   .designer .info{min-width:0}
   .bio-list li{text-align:left}
 }
+
+/* ===== 语言切换键 ===== */
+.lang-bar{
+  position:relative;z-index:5;
+  display:flex;justify-content:flex-end;align-items:center;gap:8px;
+  max-width:1080px;margin:0 auto 10px;
+}
+.lang-bar label{font-size:13px;opacity:.85;letter-spacing:1px}
+.lang-select{
+  background:rgba(0,0,0,.20);color:#fff;
+  border:1px solid rgba(255,222,0,.55);border-radius:20px;
+  padding:6px 14px;font-size:14px;cursor:pointer;font-family:inherit;outline:none;
+  transition:background .25s,border-color .25s;
+}
+.lang-select:hover{background:rgba(0,0,0,.34);border-color:var(--gold)}
+.lang-select option{color:var(--ink);background:#fff}
+
+/* ===== 阿拉伯语等 RTL 语言适配 ===== */
+[dir="rtl"] .lang-bar{justify-content:flex-start}
+[dir="rtl"] .timeline{padding-left:0;padding-right:30px}
+[dir="rtl"] .timeline::before{left:auto;right:8px}
+[dir="rtl"] .tl-item::before{left:auto;right:-30px}
+[dir="rtl"] .bio-list li{padding-left:0;padding-right:22px}
+[dir="rtl"] .bio-list li::before{left:auto;right:0}
+[dir="rtl"] .quote{border-left:none;border-right:4px solid var(--gold);border-radius:10px 0 0 10px}
